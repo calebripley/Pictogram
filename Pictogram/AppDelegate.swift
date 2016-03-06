@@ -25,6 +25,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             })
         )
         
+        // Persist user data on up start up
+        if PFUser.currentUser() != nil {
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let vc = storyboard.instantiateViewControllerWithIdentifier("TabBarController")
+            window?.rootViewController = vc
+        }
+        
+        // Logout notification and actions
+        NSNotificationCenter.defaultCenter().addObserverForName(User.userDidLogoutNotification, object: nil, queue: NSOperationQueue.mainQueue()) { (NSNotification) -> Void in
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let vc = storyboard.instantiateInitialViewController()
+            self.window?.rootViewController = vc
+        }
+        
+        UITabBar.appearance().barTintColor = UIColor(hex: 0x00A1FF, alpha: 1.0)
+        UITabBar.appearance().tintColor = UIColor(hex: 0xFF7300, alpha: 1.0)
+
         return true
     }
 
